@@ -46,10 +46,10 @@ class Library:
         if self.books is None:
             return 1
         else:
-            count_books = len([i for i in self.books])
+            count_books = len(self.books)
             return count_books + 1
 
-    def get_index_by_book_id(self, number_id):
+    def get_index_by_book_id(self, number_id) -> int:
         """
         Метод возвращает индекс книги в списке, который хранится в атрибуте экземпляра класса.
 
