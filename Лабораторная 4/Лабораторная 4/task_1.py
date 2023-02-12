@@ -129,7 +129,7 @@ class AcElectricMachine:
 
 class AsynchronousMotor(AcElectricMachine):
     """Дочерний класс асинхронных электродвигателей."""
-    def __init__(self, name: str, voltage: int, current: int, rotation: int, frequency: (int, float), use_power: int):
+    def __init__(self, name: str, voltage: int, current: int, rotation: int, frequency: int, use_power: int):
         super().__init__(name, voltage, current, rotation, frequency)
         """
         Метод конструктор объекта "AsynchronousMotor".
@@ -162,7 +162,7 @@ class AsynchronousMotor(AcElectricMachine):
                f"rotation= {self.rotation}, frequency={self.frequency}, use_power={self.use_power})"
 
     def switch_on(self) -> None:
-        """Метод (перегружаемый). Включает электродвигатель."""
+        """Метод (переопределенный). Включает электродвигатель."""
         self.voltage_value += self._voltage
         self.current_value += self._current
         self.rotation_value += self._rotation
@@ -170,7 +170,7 @@ class AsynchronousMotor(AcElectricMachine):
         self.use_power_value += self._use_power  # вносим параметр электродвигателей
 
     def switch_off(self) -> None:
-        """Метод (перегружаемый). Отключает электродвигатель."""
+        """Метод (переопределенный). Отключает электродвигатель."""
         self.voltage_value = 0
         self.current_value = 0
         self.rotation_value = 0
@@ -195,7 +195,7 @@ class AsynchronousMotor(AcElectricMachine):
 
 class SynchronousGenerator(AcElectricMachine):
     """Дочерний класс синхронных генераторов."""
-    def __init__(self, name: str, voltage: int, current: int, rotation: int, frequency: (int, float), gen_power: int):
+    def __init__(self, name: str, voltage: int, current: int, rotation: int, frequency: int, gen_power: int):
         super().__init__(name, voltage, current, rotation, frequency)
         """
         Метод конструктор объекта "SynchronousGenerator".
@@ -213,7 +213,7 @@ class SynchronousGenerator(AcElectricMachine):
     # Защищаем номинальные параметры оборудования. Изменяться могут только текущие значения (при эксплуатации).
     @property
     def gen_power(self) -> int:
-        """Возвращает значение вырабатываемой мощности электродвигателя."""
+        """Возвращает значение вырабатываемой мощности генератора."""
         return self._gen_power
 
     def __str__(self) -> str:
@@ -228,7 +228,7 @@ class SynchronousGenerator(AcElectricMachine):
                f"rotation= {self.rotation}, frequency={self.frequency}, gen_power={self.gen_power})"
 
     def switch_on(self) -> None:
-        """Метод (перегружаемый). Запускает (включает) генератор."""
+        """Метод (переопределенный). Запускает (включает) генератор."""
         self.voltage_value += self._voltage
         self.current_value += self._current
         self.rotation_value += self._rotation
@@ -236,7 +236,7 @@ class SynchronousGenerator(AcElectricMachine):
         self.gen_power_value += self._gen_power  # вносим параметр генераторов
 
     def switch_off(self) -> None:
-        """Метод (перегружаемый). Останавливает (отключает) генератор."""
+        """Метод (переопределенный). Останавливает (отключает) генератор."""
         self.voltage_value = 0
         self.current_value = 0
         self.rotation_value = 0
@@ -244,7 +244,7 @@ class SynchronousGenerator(AcElectricMachine):
         self.gen_power_value = 0
 
     def display_gen_power(self) -> None:
-        """Метод показывает текущее значение потребляемой мощности электродвигателя."""
+        """Метод показывает текущее значение вырабатываемой мощности генератора."""
         if not isinstance(self.gen_power_value, int):
             raise TypeError("Вырабатываемая мощность должна быть типа int")
         if self.gen_power_value < 0:
@@ -261,8 +261,12 @@ class SynchronousGenerator(AcElectricMachine):
 
 if __name__ == "__main__":
     # Write your solution here
-    motor = AsynchronousMotor("AMA 450L4L", 10000, 51, 1489, 50, 710000)  # инициализация
-    print(motor.current_value)
-    motor.switch_on()
-    print(motor.use_power_value)
-    motor.display_current()
+    motor = AsynchronousMotor("AMA 450L4L", 10000, 51, 1489, 50, 710000)  # инициализация экземпляра класса асинхронных электродвигателей
+    
+    print(motor.use_power_value)  # выводим первоначальное значение потребляемой мощности электродвигателя
+    
+    motor.switch_on()  # запускаем переопределенный метод
+    
+    print(motor.use_power_value)  # сравниваем с первоначальным значением (проверяем переопределенный метод)
+    
+    motor.display_current()  # выводим текущее показание тока (проверяем работу унаследованного метода)
